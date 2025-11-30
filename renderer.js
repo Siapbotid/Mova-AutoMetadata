@@ -292,10 +292,6 @@ class AutoMetadataApp {
                     `Machine ID 1: ${lic.mesinId1 || '-'}`,
                     `Machine ID 2: ${lic.mesinId2 || '-'}`,
                     `Machine ID 3: ${lic.mesinId3 || '-'}`,
-                    `Ultra: ${lic.ultra || '-'}`,
-                    `Pass: ${lic.pass || '-'}`,
-                    `Ultra Expired: ${lic.expiredDate || '-'}`,
-                    `Ultra Delivery Status: ${lic.statusDeliveryUltra || '-'}`
                 ];
                 alert(lines.join('\n'));
             } else {
@@ -1509,8 +1505,9 @@ class AutoMetadataApp {
                 console.log(`Trimmed keywords from ${analysis.keywords.length} to ${keywordsCount}`);
             }
             
-            const title = analysis.title || '';
+            let title = analysis.title || '';
             let description = analysis.description || '';
+            title = this.sanitizeTitle(title);
             
             // Apply editorial formatting if enabled (only to description, not title)
             const editorialMode = this.settingsManager.getEditorialMode();
@@ -1561,6 +1558,18 @@ class AutoMetadataApp {
         throw error;
     }
 }
+
+    sanitizeTitle(rawTitle) {
+        if (!rawTitle || typeof rawTitle !== 'string') {
+            return rawTitle;
+        }
+        let title = rawTitle;
+        title = title.replace(/\s+at\s+\d{4}-\d{2}-\d{2}[^A-Za-z0-9]*\d{2}:\d{2}:\d{2}(?:\.\d+)?Z?$/, '');
+        title = title.replace(/\s+\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}(?:\.\d+)?Z?$/, '');
+        title = title.replace(/\s+\d{4}-\d{2}-\d{2}$/, '');
+        title = title.trim().replace(/[\s\-:,]+$/, '');
+        return title;
+    }
 
     async writeMetadata(filePath, analysis) {
         return await this.metadataProcessor.writeMetadata(filePath, analysis);
