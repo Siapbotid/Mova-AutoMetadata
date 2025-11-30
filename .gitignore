@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Build output
+/dist/
+/dist-*/
+
+# Windows code signing tools & cache
+/winCodeSign-2.6.0/
+/winCodeSign_cache_content.txt
+
+# OS / editor junk files
+.DS_Store
+Thumbs.db
+*.log

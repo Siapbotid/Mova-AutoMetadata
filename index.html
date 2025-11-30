@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoMeta</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Main Application (removed hidden class) -->
+    <div id="mainApp" class="main-app">
+        <div class="container">
+            <!-- Main Layout: Two Panels -->
+            <div class="main-layout">
+                <!-- Left Panel: Settings & Controls -->
+                <div class="left-panel">
+                    <!-- API Key Section -->
+                    <section class="api-section">
+                        <h3>API Configuration</h3>
+                        <div class="api-input-group">
+                            <!-- Platform Selection -->
+                            <div class="dropdown-group">
+                                <label>AI Platform</label>
+                                <select id="platformSelect" class="platform-select">
+                                    <option value="gemini" selected>Google Gemini</option>
+                                    <!-- Claude option removed -->
+                                </select>
+                            </div>
+                            
+                            <!-- Model Selection -->
+                            <div class="dropdown-group">
+                                <label>Model</label>
+                                <select id="modelSelect" class="model-select">
+                                    <option value="gpt-4o-mini">GPT-4o Mini (Recommended)</option>
+                                </select>
+                            </div>
+                            
+                            <!-- API Key Input - Single Key Mode -->
+                            <div id="singleKeyMode">
+                                <input type="text" id="apiKeyInput" placeholder="Enter your API Key..." class="api-input">
+                            </div>
+                            
+                            <!-- API Key Input - Multiple Keys Mode -->
+                            <div id="multiKeyMode" class="multi-key-container">
+                                <textarea id="multiApiKeyInput" placeholder="Enter multiple API keys (one per line)..." class="multi-api-input"></textarea>
+                                <div class="key-mode-selection">
+                                    <label>Usage Method:</label>
+                                    <select id="keyUsageMethod" class="key-usage-select">
+                                        <option value="rotation">Rotation (Avoid Rate Limits)</option>
+                                        <option value="simultaneous">Simultaneous (Parallel Processing)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Key Mode Toggle -->
+                            <div class="key-mode-toggle">
+                                <label for="keyModeToggle">Multiple API Keys:</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="keyModeToggle">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            
+                            <!-- Action Buttons -->
+                            <div class="api-buttons">
+                                <button id="saveKeyBtn" class="btn btn-primary">💾 Save Key(s)</button>
+                                <button id="tutorialBtn" class="btn btn-info">📚 Tutorial</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Commercial Section -->
+                    <section class="commercial-section">
+                        <h3>Commercial Section</h3>
+                        <div class="commercial-group">
+                            <div class="commercial-toggle">
+                                <label for="commercialModeToggle">Enable Commercial Mode:</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="commercialModeToggle">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            
+                            <div id="commercialInputs" class="commercial-inputs" style="display: none;">
+                                <div class="commercial-row">
+                                    <div class="commercial-field">
+                                        <label for="mainSubject">Main Subject</label>
+                                        <input type="text" id="mainSubject" placeholder="e.g., BMW 330i G20, Terengganu Iconic Drawbridge" class="commercial-input">
+                                    </div>
+                                    <div class="commercial-field">
+                                        <label for="mainSubjectCategory">Category</label>
+                                        <select id="mainSubjectCategory" class="commercial-select">
+                                            <option value="Default">Default</option>
+                                            <option value="Places">Places</option>
+                                            <option value="Person">Person</option>
+                                            <option value="Vehicle">Vehicle</option>
+                                            <option value="Landmark">Landmark</option>
+                                            <option value="Object">Object</option>
+                                            <option value="Product">Product</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="commercial-row">
+                                    <div class="commercial-field">
+                                        <label for="additionalSubject">Additional Subject</label>
+                                        <input type="text" id="additionalSubject" placeholder="e.g., Terengganu, Interior Design" class="commercial-input">
+                                    </div>
+                                    <div class="commercial-field">
+                                        <label for="additionalSubjectCategory">Category</label>
+                                        <select id="additionalSubjectCategory" class="commercial-select">
+                                            <option value="Default">Default</option>
+                                            <option value="Places">Places</option>
+                                            <option value="Person">Person</option>
+                                            <option value="Vehicle">Vehicle</option>
+                                            <option value="Landmark">Landmark</option>
+                                            <option value="Object">Object</option>
+                                            <option value="Product">Product</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="commercial-note">
+                                    <p><strong>Note:</strong> When Commercial Mode is enabled, the AI will prioritize mentioning the specified subjects in titles and descriptions for more accurate and specific metadata generation.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Editorial Section -->
+                    <section class="editorial-section">
+                        <h3>Editorial Section</h3>
+                        <div class="editorial-group">
+                            <div class="editorial-toggle">
+                                <label for="editorialModeToggle">Enable Editorial Mode:</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="editorialModeToggle">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            
+                            <div id="editorialInputs" class="editorial-inputs" style="display: none;">
+                                <div class="editorial-row">
+                                    <div class="editorial-field">
+                                        <label for="editorialPlace">Place/Location</label>
+                                        <input type="text" id="editorialPlace" placeholder="e.g., Kuala Ketil, Kedah" class="editorial-input">
+                                    </div>
+                                    <div class="editorial-field">
+                                        <label for="editorialDate">Date</label>
+                                        <input type="date" id="editorialDate" class="editorial-input">
+                                    </div>
+                                </div>
+                                
+                                <div class="editorial-preview">
+                                    <label>Preview Format:</label>
+                                    <div id="editorialPreview" class="editorial-preview-text">
+                                        [Location] - [Date]: [AI Generated Description]
+                                    </div>
+                                </div>
+                                
+                                <div class="editorial-note">
+                                    <small>💡 Editorial format applies to <strong>descriptions only</strong> (not titles). Total description length limited to 200 characters including location and date.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Settings Section -->
+                    <section class="settings-section">
+                        <h3>Generation Settings</h3>
+                        <div class="settings-group">
+                            <!-- Move Image Folder section to the top -->
+                            <div class="file-group">
+                                <!-- Update the file input label -->
+                                <label>Media Folder</label>
+                                <div class="file-input-wrapper">
+                                    <input type="text" id="filePathInput" placeholder="C:\\Users\\Mikhail Aiman\\Documents\\..." readonly>
+                                    <button id="browseBtn" class="btn btn-browse">Browse</button>
+                                </div>
+                            </div>
+                            
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label>Keywords (Max 49)</label>
+                                    <input type="number" id="keywordsCount" value="49" min="1" max="49" step="1"
+                                           onblur="if(this.value < 1) this.value = 1; if(this.value > 49) this.value = 49;"
+                                           title="Enter a value between 1 and 49">
+                                </div>
+                                <div class="input-group">
+                                    <label>Title Length (70-200)</label>
+                                    <input type="number" id="titleLength" value="70" min="70" max="200" step="1" 
+                                           onblur="if(this.value < 70) this.value = 70; if(this.value > 200) this.value = 200;"
+                                           title="Enter a value between 70 and 200">
+                                </div>
+                            </div>
+                            
+                            <div class="options-group">
+                                <div class="options-row">
+                                    <div class="option-column">
+                                        <label>Title File Rename</label>
+                                        <select id="titleFileRename" class="dropdown-select">
+                                            <option value="no">No</option>
+                                            <option value="yes">Yes</option>
+                                        </select>
+                                    </div>
+                                    <div class="option-column">
+                                        <label>Filename Analysis</label>
+                                        <select id="useFilenameAnalysis" class="dropdown-select">
+                                            <option value="no">No</option>
+                                            <option value="yes">Yes</option>
+                                        </select>
+                                    </div>
+                                    <div class="option-column">
+                                        <label>Concurrent (Max 50)</label>
+                                        <input type="number" id="maxConcurrent" class="dropdown-select" value="3" min="1" max="50" step="1">
+                                    </div>
+                                </div>
+                                
+                                <!-- Auto Clean Up Toggle -->
+                                <div class="options-group auto-cleanup-section">
+                                    <div class="options-row">
+                                        <div class="option-column">
+                                            <label>Auto Clean Up (Improve Performance)</label>
+                                            <select id="autoCleanUp" class="dropdown-select">
+                                                <option value="yes">Yes</option>
+                                                <option value="no">No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button id="generateBtn" class="btn btn-generate">Generate Metadata</button>
+                            
+                            <!-- Control Buttons -->
+                            <div class="control-buttons">
+                                <button id="pauseBtn" class="btn btn-control btn-pause">Pause</button>
+                                <button id="stopBtn" class="btn btn-control btn-stop">Stop</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="license-section">
+                        <h3>License</h3>
+                        <div class="license-buttons">
+                            <button id="checkLicenseBtn" class="btn btn-primary">Check License</button>
+                            <button id="logoutBtn" class="btn btn-stop">Logout</button>
+                        </div>
+                    </section>
+
+                </div>
+
+                <!-- Right Panel: Progress & Processing Results -->
+                <div class="right-panel">
+                    <!-- Progress Container -->
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <div class="progress-info">
+                                <span id="progressText">0/0 Media</span>
+                                <span id="progressStatus" class="progress-status">Ready</span>
+                            </div>
+                            <span id="progressPercentage" class="progress-percentage-header">0%</span>
+                        </div>
+                        <div class="progress-bar-wrapper">
+                            <div class="progress-bar">
+                                <div id="progressFill" class="progress-fill">
+                                    <div class="progress-shine"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="progress-details">
+                            <span id="progressETA" class="progress-eta">ETA: --</span>
+                            <span id="progressSpeed" class="progress-speed">-- files/min</span>
+                        </div>
+                    </div>
+
+                    <!-- Processing Results Section -->
+                    <section class="results-section">
+                        <h3>Processing Results</h3>
+                        <div id="resultsContainer" class="results-container">
+                            <!-- Results will be dynamically added here -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Completion Modal -->
+    <div id="completionModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" fill="#4CAF50"/>
+                        <path d="m9 12 2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h2 class="modal-title">Processing Complete!</h2>
+            </div>
+            <div class="modal-body">
+                <div class="completion-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="processedCount">0</span>
+                        <span class="stat-label">Media Processed</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalCount">0</span>
+                        <span class="stat-label">Total Media</span>
+                    </div>
+                </div>
+                <div class="completion-message">
+                    <p>Your media have been successfully processed and metadata has been generated.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="modalCloseBtn" class="btn btn-primary modal-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Done
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tutorial Modal -->
+    <div id="tutorialModal" class="modal-overlay">
+        <div class="modal-container tutorial-modal">
+            <div class="modal-header">
+                <div class="modal-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" fill="#667eea"/>
+                        <path d="M12 6v6l4 2" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h2 class="modal-title">Quick Start Tutorial</h2>
+                <button id="tutorialCloseBtn" class="modal-close-btn">×</button>
+            </div>
+            <div class="modal-body tutorial-body">
+                <div class="tutorial-steps">
+                    <div class="tutorial-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3> Configure API</h3>
+                            <p>Select your AI platform (OpenAI or Gemini) and enter your API key. You can get keys from their respective websites.</p>
+                        </div>
+                    </div>
+                    <div class="tutorial-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3> Select Media</h3>
+                            <p>Choose individual files or select an entire folder containing images, videos, or vector files (SVG, EPS).</p>
+                        </div>
+                    </div>
+                    <div class="tutorial-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3> Adjust Settings</h3>
+                            <p>Set your preferred title length, keyword count, and choose output folders for processed files.</p>
+                        </div>
+                    </div>
+                    <div class="tutorial-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3> Generate Metadata</h3>
+                            <p>Click "Generate Metadata" and watch as AI analyzes your media and creates titles, keywords, and descriptions.</p>
+                        </div>
+                    </div>
+                    <div class="tutorial-step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h3> Review Results</h3>
+                            <p>Check the results panel to see processed files. Metadata is embedded in files and exported to CSV for easy management.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="tutorial-tips">
+                    <h4> Pro Tips:</h4>
+                    <ul>
+                        <li>Use multiple API keys for faster processing</li>
+                        <li>Gemini is recommended for better cost efficiency</li>
+                        <li>SVG files work better with Gemini than OpenAI</li>
+                        <li>Check the CSV files for easy metadata management</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="tutorialGotItBtn" class="btn btn-primary modal-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Got it!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="renderer.js"></script>
+<!-- License Validation Modal -->
+    <div id="license-validation-modal" class="modal" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); justify-content: center; align-items: center;">
+      <div class="modal-content" style="background-color: #fefefe; margin: auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 500px; border-radius: 10px; text-align: center;">
+        <h2>License Verification</h2>
+        <p>Please enter your email address to validate your license.</p>
+        <input type="email" id="license-email-input" placeholder="email@example.com" style="width: calc(100% - 20px); padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px;">
+        <button id="validate-license-button" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Validate</button>
+        <p id="license-status-message" style="margin-top: 10px; color: red;"></p>
+      </div>
+    </div>
+    <script src="index-renderer.js"></script>
+  </body>
+</html>

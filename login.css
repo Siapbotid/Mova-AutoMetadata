@@ -1,0 +1,86 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4e9ff; /* Light purple background to match logo */
+    background-image: linear-gradient(0deg, transparent 24%, rgba(124, 77, 255, 0.08) 25%, rgba(124, 77, 255, 0.08) 26%, transparent 27%, transparent 74%, rgba(124, 77, 255, 0.08) 75%, rgba(124, 77, 255, 0.08) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(124, 77, 255, 0.08) 25%, rgba(124, 77, 255, 0.08) 26%, transparent 27%, transparent 74%, rgba(124, 77, 255, 0.08) 75%, rgba(124, 77, 255, 0.08) 76%, transparent 77%, transparent);
+    background-size: 50px 50px;
+}
+
+.login-container {
+    background-color: #ffffff; /* Light container background */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+    text-align: center;
+    color: #333; /* Darker text for light theme */
+}
+
+.logo {
+    width: 150px;
+    margin-bottom: 30px;
+}
+
+.login-form .input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc; /* Lighter border */
+    border-radius: 5px;
+    background-color: #ffffff; /* Light input background */
+    color: #333; /* Darker text for light theme */
+    box-sizing: border-box;
+}
+
+#login-status-message {
+    font-size: 12px; /* Smaller font size for status messages */
+    text-align: center;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    width: 280px; /* Adjust this width as needed */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-form input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #333;
+    box-sizing: border-box;
+    margin-bottom: 10px; /* Space between input and button */
+}
+
+.login-button {
+    background-color: #9c27b0; /* Primary purple to match logo */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.login-button:hover {
+    background-color: #7b1fa2; /* Darker purple for hover */
+}
