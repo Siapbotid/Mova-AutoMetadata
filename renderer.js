@@ -1564,9 +1564,38 @@ class AutoMetadataApp {
             return rawTitle;
         }
         let title = rawTitle;
-        title = title.replace(/\s+at\s+\d{4}-\d{2}-\d{2}[^A-Za-z0-9]*\d{2}:\d{2}:\d{2}(?:\.\d+)?Z?$/, '');
-        title = title.replace(/\s+\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}(?:\.\d+)?Z?$/, '');
-        title = title.replace(/\s+\d{4}-\d{2}-\d{2}$/, '');
+        // Hapus timestamp ISO teknis di akhir judul
+        title = title.replace(/\s+at\s+\d{4}-\d{2}-\d{2}[^A-Za-z0-9]*\d{2}:\d{2}:\d{2}(?:\.\d+)?Z?$/i, '');
+        title = title.replace(/\s+\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}(?:\.\d+)?Z?$/i, '');
+        title = title.replace(/\s+\d{4}-\d{2}-\d{2}$/i, '');
+
+        // Hapus frasa tanggal natural dengan nama bulan (contoh: "November 21, 2025")
+        const monthPattern = '(January|February|March|April|May|June|July|August|September|October|November|December|Jan\\.?|Feb\\.?|Mar\\.?|Apr\\.?|Jun\\.?|Jul\\.?|Aug\\.?|Sep\\.?|Sept\\.?|Oct\\.?|Nov\\.?|Dec\\.?)';
+
+        // "captured on November 21, 2025" -> "captured"
+        const capturedWithDate = new RegExp(`\\b(captured\\s+on|captured|taken\\s+on|shot\\s+on)\\s+${monthPattern}\\s+\\d{1,2},\\s*\\d{4}`, 'gi');
+        title = title.replace(capturedWithDate, (m, verb) => verb.split(' ')[0]);
+
+        // "on November 21, 2025" -> "on" (nanti dibersihkan kalau di akhir)
+        const onWithDate = new RegExp(`\\bon\\s+${monthPattern}\\s+\\d{1,2},\\s*\\d{4}`, 'gi');
+        title = title.replace(onWithDate, 'on');
+
+        // Hapus pola tanggal "November 21, 2025" atau "Nov. 21, 2025"
+        const fullDate = new RegExp(`${monthPattern}\\s+\\d{1,2},\\s*\\d{4}`, 'gi');
+        title = title.replace(fullDate, '');
+
+        // Hapus pola "November 2025" atau "Nov. 2025"
+        const monthYear = new RegExp(`${monthPattern}\\s+\\d{4}`, 'gi');
+        title = title.replace(monthYear, '');
+
+        // Hapus tahun 4 digit yang berdiri sendiri (contoh: "2025" di akhir kata)
+        title = title.replace(/\b\d{4}\b/g, '');
+
+        // Bersihkan kata penghubung yang menggantung di akhir
+        title = title.replace(/\b(on|captured|taken|shot)\s*$/gi, '');
+
+        // Rapikan spasi dan tanda baca berlebih di akhir judul
+        title = title.replace(/\s{2,}/g, ' ');
         title = title.trim().replace(/[\s\-:,]+$/, '');
         return title;
     }
