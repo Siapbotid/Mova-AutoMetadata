@@ -1,6 +1,17 @@
 const fs = require('fs');
 const path = require('path');
 
+function resolveAsarPath(p) {
+    if (!p) return p;
+    if (p.includes('app.asar')) {
+        const unpackedPath = p.replace('app.asar', 'app.asar.unpacked');
+        if (fs.existsSync(unpackedPath)) {
+            return unpackedPath;
+        }
+    }
+    return p;
+}
+
 class FFmpegConfig {
     constructor() {
         this.ffmpegPath = null;
@@ -29,6 +40,10 @@ class FFmpegConfig {
                 this.ffprobePath = require('ffprobe-static').path;
                 console.log('Development ffmpegPath:', this.ffmpegPath);
                 console.log('Development ffprobePath:', this.ffprobePath);
+                this.ffmpegPath = resolveAsarPath(this.ffmpegPath);
+                this.ffprobePath = resolveAsarPath(this.ffprobePath);
+                console.log('Resolved development ffmpegPath:', this.ffmpegPath);
+                console.log('Resolved development ffprobePath:', this.ffprobePath);
                 
                 // Verify files exist
                 if (fs.existsSync(this.ffmpegPath) && fs.existsSync(this.ffprobePath)) {
