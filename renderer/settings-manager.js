@@ -5,7 +5,7 @@ class SettingsManager {
             keywordsCount: 10,
             titleLength: 60,
             titleFileRename: 'no',
-            useFilenameAnalysis: 'yes',
+            useFilenameAnalysis: 'no',
             maxConcurrent: 3,
             editorialMode: false,
             editorialPlace: '',
